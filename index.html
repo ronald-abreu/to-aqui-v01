@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>To Aqui - Chamada Inteligente</title>
+    <title>Pronatec - Portal do Aluno</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Rawline:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -25,19 +25,19 @@
         ::-webkit-scrollbar-track { background: #f1f1f1; }
         ::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
 
-        /* Transições suaves entre telas */
+        /* ATUALIZADO: Adicionada transição de opacidade para o efeito suave da Splash Screen */
         .screen { 
             display: none; 
             height: 100%; 
             flex-direction: column; 
-            opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            opacity: 0; 
+            transition: opacity 0.5s ease-in-out; 
         }
         .screen.active { 
             display: flex; 
-            opacity: 1;
+            opacity: 1; 
         }
-        
+
         .btn-primary { background-color: #1351b4; color: white; transition: all 0.2s; }
         .btn-primary:active { transform: scale(0.98); background-color: #0c326f; }
         .course-done { opacity: 0.7; background-color: #f0fdf4; border-color: #bbf7d0; }
@@ -52,12 +52,20 @@
 <body>
 
     <div class="mobile-frame">
-        
-        <div id="screen-splash-logo" class="screen active bg-white justify-center items-center">
+
+        <div id="screen-logo-intro" class="screen active bg-white justify-center items-center">
             <img src="logo-toaqui.png" alt="Logo To Aqui" class="w-64 animate-pulse">
         </div>
+        
+        <div id="screen-splash" class="screen relative">
+            <img src="Tela_Login.jpeg" alt="Capa Gov.br" class="w-full h-full object-cover">
+            
+            <div class="absolute w-full px-10" style="top: 75%;">
+                <button onclick="goTo('screen-login-cpf')" class="w-full h-14 bg-transparent cursor-pointer"></button>
+            </div>
+        </div>
 
-        <div id="screen-login-cpf" class="screen bg-white p-6 overflow-y-auto pt-12">
+        <div id="screen-login-cpf" class="screen bg-white p-6 overflow-y-auto">
             <div class="flex justify-between items-center mb-8">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Governo_Federal_do_Brasil_logo_%282000%29.svg" alt="Gov Br" class="w-24">
                 <div class="flex gap-4 text-blue-800 text-lg">
@@ -80,9 +88,29 @@
             </div>
 
             <hr class="border-gray-200 mb-6">
-            <div class="space-y-4 opacity-70 text-sm">
-                <p>Login com seu banco</p>
-                <p>Seu certificado digital</p>
+
+            <h3 class="font-semibold text-gray-800 mb-4">Outras opções de identificação:</h3>
+            
+            <div class="space-y-6">
+                <div class="flex items-center gap-3 opacity-80">
+                    <div class="w-8 h-8 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">$</div>
+                    <span class="text-green-700 font-semibold text-sm">Login com seu banco <span class="bg-green-600 text-white text-[9px] px-1 py-0.5 rounded ml-2">SUA CONTA SERÁ PRATA</span></span>
+                </div>
+                
+                <div class="flex items-center gap-3 text-gray-600">
+                    <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-blue-700">📱</div>
+                    <span class="text-sm">Seu aplicativo gov.br</span>
+                </div>
+
+                <div class="flex items-center gap-3 text-gray-600">
+                    <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-blue-700">🔒</div>
+                    <span class="text-sm">Seu certificado digital</span>
+                </div>
+
+                <div class="flex items-center gap-3 text-gray-600">
+                    <div class="w-8 h-8 flex items-center justify-center bg-gray-100 rounded-full text-blue-700">☁️</div>
+                    <span class="text-sm">Seu certificado digital em nuvem</span>
+                </div>
             </div>
         </div>
 
@@ -90,7 +118,7 @@
             <header class="bg-[#071d41] text-white pt-10 pb-6 px-6 rounded-b-3xl shadow-lg relative z-10">
                 <div class="flex justify-between items-center">
                     <div>
-                        <p class="text-xs text-gray-300 font-light mb-1">Bem-vindo ao To Aqui</p>
+                        <p class="text-xs text-gray-300 font-light mb-1">Bem-vindo ao Pronatec</p>
                         <h2 class="text-xl font-bold">Olá, Estudante</h2>
                     </div>
                     <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center border border-white/30">A</div>
@@ -153,19 +181,19 @@
             { id: 4, title: "Encanador Instalador", hours: "240h", schedule: "Ter, Qui, Sex - Noite", color: "blue", completed: false, dates: [{ day: "02/12", week: "Terça", time: "19:00 - 22:00", subject: "Hidráulica" }] }
         ];
 
+        // ATUALIZADO: Função GoTo com delay pequeno para permitir animação
         function goTo(screenId) {
-            // Pequeno delay para permitir a transição CSS
             document.querySelectorAll('.screen.active').forEach(s => {
-                s.style.opacity = '0';
-                setTimeout(() => s.classList.remove('active'), 300);
+                s.style.opacity = '0'; // Começa a desaparecer
+                setTimeout(() => s.classList.remove('active'), 300); // Remove depois de 300ms
             });
 
             setTimeout(() => {
                 const nextScreen = document.getElementById(screenId);
                 nextScreen.classList.add('active');
-                // Força um reflow para a transição funcionar
+                // Pequeno hack para forçar o navegador a processar a animação
                 void nextScreen.offsetWidth; 
-                nextScreen.style.opacity = '1';
+                nextScreen.style.opacity = '1'; // Aparece
                 if (screenId === 'screen-home') renderCourses();
             }, 300);
         }
@@ -241,12 +269,11 @@
             goTo('screen-success');
         }
 
-        // --- AUTOMAÇÃO DA SPLASH SCREEN ---
-        // Quando a janela terminar de carregar...
+        // --- ATUALIZADO: SCRIPT DE INICIALIZAÇÃO ---
         window.onload = function() {
-            // Espera 3 segundos (3000ms) e muda para a tela de login
+            // Espera 3 segundos e vai para a tela de capa do Gov.br (que se chama screen-splash no seu código original)
             setTimeout(() => {
-                goTo('screen-login-cpf');
+                goTo('screen-splash');
             }, 3000);
         }
     </script>
